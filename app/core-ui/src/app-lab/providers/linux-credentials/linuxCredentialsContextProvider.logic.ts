@@ -1,11 +1,13 @@
 import { BOARD_FQBN } from '@cloud-editor-mono/common';
 import {
+  getLinuxDistribution,
   isUserPasswordSet,
   setUserPassword as apiSetUserPassword,
 } from '@cloud-editor-mono/domain/src/services/services-by-app/app-lab';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useReducer } from 'react';
 
+import { BoardScopedQuery } from '../../boardScopedQuery';
 import { useBoards } from '../../hooks/useBoards';
 import { useBoardLifecycleStore } from '../../store/boardLifecycle';
 import { LinuxCredentialsContextValue } from './linuxCredentialsContext';
@@ -83,6 +85,14 @@ export function useLinuxCredentials(): LinuxCredentialsContextValue {
     },
   );
 
+  const { data: linuxDistribution } = useQuery(
+    [BoardScopedQuery.LINUX_DISTRIBUTION],
+    async () => getLinuxDistribution(),
+    {
+      enabled: boardIsReachable && isVentunoQ,
+    },
+  );
+
   const {
     mutate: setUserPassword,
     isLoading: setUserPasswordIsLoading,
@@ -134,6 +144,7 @@ export function useLinuxCredentials(): LinuxCredentialsContextValue {
 
   return {
     isVentunoQ,
+    linuxDistribution,
     userPasswordChecked,
     userPasswordIsSet: userPasswordIsSet ?? false,
     setUserPassword: handleSetUserPassword,

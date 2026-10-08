@@ -24,6 +24,7 @@ const LinuxCredentials = forwardRef((props: LinuxCredentialsProps, ref) => {
   const passwordConfirmationInputRef = useRef<HTMLInputElement>(null);
   const {
     isVentunoQ,
+    linuxDistribution,
     setUserPassword,
     setUserPasswordIsLoading,
     setUserPasswordIsError,
@@ -133,9 +134,9 @@ const LinuxCredentials = forwardRef((props: LinuxCredentialsProps, ref) => {
           </XXSmall>
         )}
       </div>
-      {isVentunoQ && (
+      {isVentunoQ && linuxDistribution && (
         <div className={styles['distro']}>
-          Distribution: Ubuntu, provided by Canonical
+          Distribution: {linuxDistribution}
         </div>
       )}
     </div>

@@ -78,6 +78,7 @@ export type UseBoardConfigurationLogic = () => {
 
 export type UseLinuxCredentialsLogic = () => {
   isVentunoQ: boolean;
+  linuxDistribution?: string;
   userPasswordChecked: boolean;
   userPasswordIsSet: boolean;
   setUserPassword: (
