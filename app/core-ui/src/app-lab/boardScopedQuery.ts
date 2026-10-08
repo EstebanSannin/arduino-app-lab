@@ -34,6 +34,8 @@ export enum BoardScopedQuery {
   ETHERNET_STATUS = 'ethernet-status',
   INTERNET_STATUS = 'internet-status',
   NETWORK_LIST = 'networkList',
+  // Torizon Cloud
+  TORIZON_CLOUD_STATUS = 'torizon-cloud-status',
   // board firmware / image update state
   BOARD_UPDATE_CHECK = 'board-update-check',
   // installed AI models

@@ -1,4 +1,4 @@
-import { Duplicate } from '@cloud-editor-mono/images/assets/icons';
+import { Duplicate, Torizon } from '@cloud-editor-mono/images/assets/icons';
 import {
   AiModelRequiredDialog,
   AppAction,
@@ -49,6 +49,7 @@ const AppLabAppDetail: React.FC<AppLabAppDetailProps> = (
     deleteTreeItemDialogLogic,
   } = appLabAppDetailLogic(appId, section);
 
+  const { canPublishToTorizonCloud } = appTitleLogic();
   const { formatMessage } = useI18n();
 
   return (
@@ -69,6 +70,18 @@ const AppLabAppDetail: React.FC<AppLabAppDetailProps> = (
               runtimeActionsLogic={runtimeActionsLogic}
               runtimeDisable={!fileTree}
             />
+          )}
+          {canPublishToTorizonCloud && !app?.example && (
+            <Button
+              onClick={(): void => onAppAction(AppAction.PublishToTorizonCloud)}
+              variant={ButtonVariant.Secondary}
+              appearance={ButtonAppearance.Action}
+              size={ButtonSize.XSmall}
+              Icon={Torizon}
+              classes={{ button: styles['actions--torizon-cloud'] }}
+            >
+              {formatMessage(messages.publishToTorizonCloudButton)}
+            </Button>
           )}
           {app?.example && (
             <Button

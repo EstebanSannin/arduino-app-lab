@@ -10,6 +10,7 @@ import {options} from '../models';
 import {ethernet} from '../models';
 import {fs} from '../models';
 import {learn} from '../models';
+import {torizoncloud} from '../models';
 import {wifi} from '../models';
 import {httpclient} from '../models';
 import {airuntime} from '../models';
@@ -91,6 +92,8 @@ export function CreateFolder(arg1:string,arg2:boolean):Promise<void>;
 
 export function DeleteRefreshToken(arg1:string):Promise<void>;
 
+export function DeleteTorizonCloudCredentials():Promise<void>;
+
 export function DisableNetworkMode(arg1:string):Promise<void>;
 
 export function DisconnectWiFi():Promise<void>;
@@ -161,6 +164,8 @@ export function GetTags():Promise<Array<learn.Tag>>;
 
 export function GetTitle():Promise<string>;
 
+export function GetTorizonCloudStatus():Promise<torizoncloud.Status>;
+
 export function GetWiFiStatus():Promise<wifi.WifiStatus>;
 
 export function HandleSecondInstanceLaunch(arg1:options.SecondInstanceData):Promise<void>;
@@ -170,6 +175,8 @@ export function ImportAppFromPath(arg1:string):Promise<string>;
 export function ImportFileToAppFromPath(arg1:string,arg2:string,arg3:string,arg4:boolean):Promise<string>;
 
 export function ImportFolderToAppFromPath(arg1:string,arg2:string,arg3:string,arg4:boolean):Promise<string>;
+
+export function ImportTorizonCloudCredentials():Promise<boolean>;
 
 export function InferOrchestratorURL():Promise<string>;
 
@@ -206,6 +213,10 @@ export function OpenBoardTerminal():Promise<void>;
 export function OpenFile(arg1:string):Promise<void>;
 
 export function OpenUIWhenReady(arg1:number,arg2:number):Promise<void>;
+
+export function PrepareTorizonCloudRelease(arg1:string):Promise<torizoncloud.Release>;
+
+export function ProvisionTorizonCloudDevice(arg1:string):Promise<void>;
 
 export function RebootBoard(arg1:string):Promise<void>;
 
@@ -252,6 +263,8 @@ export function UnwatchAll():Promise<void>;
 export function UnwatchApp(arg1:string):Promise<void>;
 
 export function UnwatchAppsDir(arg1:string):Promise<void>;
+
+export function UploadTorizonCloudRelease():Promise<torizoncloud.Release>;
 
 export function WatchApp(arg1:string):Promise<void>;
 

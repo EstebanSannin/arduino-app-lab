@@ -36,5 +36,6 @@ export * from './rename-app-dialog/RenameAppDialog';
 export * from './skip-login-dialog/SkipLoginDialog';
 export * from './swap-running-app-dialog/SwapRunningAppDialog';
 export * from './swap-running-app-dialog/swapRunningAppDialog.type';
+export * from './torizon-cloud-publish-dialog/TorizonCloudPublishDialog';
 export * from './train-new-model-dialog/TrainNewModelDialog';
 export * from './unsupported-carrier-dialog/UnsupportedCarrierDialog';

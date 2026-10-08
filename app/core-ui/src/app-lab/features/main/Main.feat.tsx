@@ -16,6 +16,7 @@ import AgentModeBanner from '../agent-mode-banner/AgentModeBanner.feat';
 import { FlasherFeat } from '../flasher/Flasher.feat';
 import FooterBar from '../footer-bar/FooterBar.feat';
 import Setup from '../setup/Setup.feat';
+import TorizonCloudBanner from '../torizon-cloud-banner/TorizonCloudBanner.feat';
 import { useMainLogic } from './main.logic';
 import styles from './main.module.scss';
 
@@ -89,7 +90,10 @@ const AppLabMain: React.FC = () => {
               <SidePanel
                 sidePanelLogic={sidePanelLogic}
                 banner={
-                  isFFEnabled('AI_ASSISTANT') ? <AgentModeBanner /> : undefined
+                  <>
+                    {isFFEnabled('AI_ASSISTANT') && <AgentModeBanner />}
+                    <TorizonCloudBanner />
+                  </>
                 }
               />
             )}

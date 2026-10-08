@@ -4,12 +4,14 @@ import {
   getCurrentVersion,
   getIPAddress,
   newVersion,
+  openLinkExternal,
 } from '@cloud-editor-mono/domain/src/services/services-by-app/app-lab';
 import { ArduinoLoop } from '@cloud-editor-mono/images/assets/icons';
 import { AppDetailedInfo } from '@cloud-editor-mono/infrastructure';
 import {
   FooterBarLogic,
   SystemResources,
+  TORIZON_CLOUD_URL,
   useI18n,
 } from '@cloud-editor-mono/ui-components/lib/components-by-app/app-lab';
 import { useQuery } from '@tanstack/react-query';
@@ -22,6 +24,7 @@ import { useBoardItem } from '../../hooks/useBoardItem';
 import { UseBoards } from '../../hooks/useBoards';
 import { useIsBoard } from '../../hooks/useIsBoard';
 import { useTerminal } from '../../hooks/useTerminal';
+import { useTorizonCloud } from '../../hooks/useTorizonCloud';
 import { BoardResourcesContext } from '../../providers/board-resources/boardResourcesContext';
 import { useFooterNotifications } from '../../providers/footer-notifications/footerNotificationsContext';
 import { LanguageServerContext } from '../../providers/language-server/languageServerContext';
@@ -105,6 +108,7 @@ export const createUseFooterBarLogic = function (
     );
     const { markAgentModeHintSeen } = useAgentModeSeen();
     const agentModeTooltip = useAgentModeTooltipLogic(aiAssistantActive);
+    const { status: torizonCloudStatus } = useTorizonCloud();
     const { shine: agentModeEntryShine, markEntryClicked } =
       useAgentModeEntryShineLogic(aiAssistantActive);
 
@@ -264,6 +268,10 @@ export const createUseFooterBarLogic = function (
       onOpenApp,
       onOpenAiAssistant,
       aiAssistantActive,
+      torizonCloudStatus,
+      onOpenTorizonCloud: () => openLinkExternal(TORIZON_CLOUD_URL),
+      onOpenTorizonCloudSettings: () =>
+        navigate({ to: '/settings', hash: 'torizon-cloud' }),
       agentModeTooltip,
       agentModeEntryShine,
       onOpenTerminal,

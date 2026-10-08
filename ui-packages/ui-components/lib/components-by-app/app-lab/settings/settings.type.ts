@@ -13,6 +13,7 @@ import {
   NetworkSettingsDialogLogic,
   PasswordDialogLogic,
   UnsupportedCarrierDialogLogic,
+  UseTorizonCloudLogic,
 } from '@cloud-editor-mono/ui-components/lib/components-by-app/app-lab';
 
 export type UseCloudConnectorSettingsLogic = () => {
@@ -84,6 +85,7 @@ export type UseSettingsLogic = () => {
   networkSettingsLogic: UseNetworkSettingsLogic;
   systemSettingsLogic: UseSystemSettingsLogic;
   passwordSettingsLogic: UsePasswordSettingsLogic;
+  torizonCloudSettingsLogic: UseTorizonCloudLogic;
   onOpenExternal: (url: string) => void;
 };
 

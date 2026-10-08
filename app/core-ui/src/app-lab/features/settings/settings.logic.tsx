@@ -42,6 +42,7 @@ import { useShallow } from 'zustand/react/shallow';
 import { BoardScopedQuery } from '../../boardScopedQuery';
 import { useIsBoard } from '../../hooks/useIsBoard';
 import { useSystemProps } from '../../hooks/useSystemProps';
+import { useTorizonCloud } from '../../hooks/useTorizonCloud';
 import { AuthContext } from '../../providers/auth/authContext';
 import { BoardConfigurationContext } from '../../providers/board-configuration/boardConfigurationContext';
 import { BoardResourcesContext } from '../../providers/board-resources/boardResourcesContext';
@@ -593,6 +594,7 @@ export const createUseSettingsLogic = function (): UseSettingsLogic {
       networkSettingsLogic: useNetworkSettingsLogic,
       systemSettingsLogic: useSystemSettingsLogic,
       passwordSettingsLogic: usePasswordSettingsLogic,
+      torizonCloudSettingsLogic: useTorizonCloud,
       onOpenExternal: openLinkExternal,
     };
   };

@@ -22,9 +22,11 @@ import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import { useCallback, useEffect, useState } from 'react';
 
+import { useTorizonCloud } from '../../../../../hooks/useTorizonCloud';
 import { DETAIL_PATH_BY_SECTION } from '../../../../../routes/__root';
 import { sendAppLabNotification } from '../../../../notifications';
 import { messages } from '../../messages';
+import { useTorizonCloudPublish } from './torizonCloudPublish.logic';
 
 export type UseCreateAppTitleLogic = (
   app: AppDetailedInfo | undefined,
@@ -164,6 +166,10 @@ export const useCreateAppTitleLogic: UseCreateAppTitleLogic = function (
     exportAppDialogOpen,
   ]);
 
+  const { status: torizonCloudStatus } = useTorizonCloud();
+  const { startPublish, publishDialogLogic: torizonCloudPublishDialogLogic } =
+    useTorizonCloudPublish(app);
+
   const onAppNameChange = useCallback((value: string): void => {
     setName(value);
     setHasError(false);
@@ -173,25 +179,32 @@ export const useCreateAppTitleLogic: UseCreateAppTitleLogic = function (
     setName(app?.name || '');
   }, [app?.name]);
 
-  const onAppAction = useCallback((action: AppAction): void => {
-    switch (action) {
-      case AppAction.Rename:
-        setEditing(true);
-        break;
+  const onAppAction = useCallback(
+    (action: AppAction): void => {
+      switch (action) {
+        case AppAction.Rename:
+          setEditing(true);
+          break;
 
-      case AppAction.Duplicate:
-        setCreateAppDialogOpen(true);
-        break;
+        case AppAction.Duplicate:
+          setCreateAppDialogOpen(true);
+          break;
 
-      case AppAction.Export:
-        setExportAppDialogOpen(true);
-        break;
+        case AppAction.Export:
+          setExportAppDialogOpen(true);
+          break;
 
-      case AppAction.Delete:
-        setDeleteAppDialogOpen(true);
-        break;
-    }
-  }, []);
+        case AppAction.PublishToTorizonCloud:
+          startPublish();
+          break;
+
+        case AppAction.Delete:
+          setDeleteAppDialogOpen(true);
+          break;
+      }
+    },
+    [startPublish],
+  );
 
   const onResetAppName = useCallback((): void => {
     setEditing(false);
@@ -233,12 +246,14 @@ export const useCreateAppTitleLogic: UseCreateAppTitleLogic = function (
       openApp,
       onAppNameChange,
       onAppAction,
+      canPublishToTorizonCloud: !!torizonCloudStatus?.configured,
       onResetAppName,
       onRenameApp,
       onUpdateAppIcon,
       deleteAppDialogLogic,
       createAppDialogLogic,
       exportAppDialogLogic,
+      torizonCloudPublishDialogLogic,
     }),
     [
       app,
@@ -251,12 +266,14 @@ export const useCreateAppTitleLogic: UseCreateAppTitleLogic = function (
       openApp,
       onAppNameChange,
       onAppAction,
+      torizonCloudStatus?.configured,
       onResetAppName,
       onRenameApp,
       onUpdateAppIcon,
       deleteAppDialogLogic,
       createAppDialogLogic,
       exportAppDialogLogic,
+      torizonCloudPublishDialogLogic,
     ],
   );
 };

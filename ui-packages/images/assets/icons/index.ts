@@ -205,6 +205,7 @@ import ToggleOff from '../toggle-off.svg?react';
 import ToggleOn from '../toggle-on.svg?react';
 import ToolbarCancelX from '../toolbar-cancel-x.svg?react';
 import Tools from '../tools.svg?react';
+import Torizon from '../torizon.svg?react';
 import TrainModel from '../train-model.svg?react';
 import TravelCompassNormal from '../travel-compass-normal.svg?react';
 import Triangle from '../triangle.svg?react';
@@ -443,6 +444,7 @@ export {
   ToggleOn,
   ToolbarCancelX,
   Tools,
+  Torizon,
   TrainModel,
   TravelCompassNormal,
   Triangle,

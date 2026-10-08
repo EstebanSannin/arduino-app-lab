@@ -33,6 +33,7 @@ import { BoardStorage } from './sub-components/board-storage/BoardStorage';
 import { Network } from './sub-components/network/Network';
 import { Notification } from './sub-components/notification/Notification';
 import { System } from './sub-components/system/System';
+import { TorizonCloud } from './sub-components/torizon-cloud/TorizonCloud';
 
 const FooterBar: React.FC<FooterBarProps> = (props: FooterBarProps) => {
   const { formatMessage } = useI18n();
@@ -49,6 +50,9 @@ const FooterBar: React.FC<FooterBarProps> = (props: FooterBarProps) => {
     onOpenApp,
     onOpenAiAssistant,
     aiAssistantActive,
+    torizonCloudStatus,
+    onOpenTorizonCloud,
+    onOpenTorizonCloudSettings,
     agentModeTooltip,
     agentModeEntryShine,
     onOpenTerminal,
@@ -255,6 +259,14 @@ const FooterBar: React.FC<FooterBarProps> = (props: FooterBarProps) => {
           />
 
           <Network networkItem={systemResources.network} boardIP={boardIP} />
+
+          {torizonCloudStatus && (
+            <TorizonCloud
+              status={torizonCloudStatus}
+              onOpenCloud={onOpenTorizonCloud}
+              onOpenSettings={onOpenTorizonCloudSettings}
+            />
+          )}
 
           {showAiAssistant ? (
             <div className={styles['ai-assistant-entry']}>

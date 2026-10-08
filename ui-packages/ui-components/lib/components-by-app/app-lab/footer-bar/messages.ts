@@ -31,6 +31,36 @@ export const messages = defineMessages({
     defaultMessage: 'Not Connected',
     description: 'Status label indicating that the network is not connected',
   },
+  torizonCloudPanelTitle: {
+    id: 'appLabFooterBar.torizonCloudPanelTitle',
+    defaultMessage: 'Torizon Cloud',
+    description: 'Title of the Torizon Cloud panel',
+  },
+  torizonCloudPanelDevice: {
+    id: 'appLabFooterBar.torizonCloudPanelDevice',
+    defaultMessage: 'Device: {name}',
+    description: 'Torizon Cloud device name',
+  },
+  torizonCloudPanelApp: {
+    id: 'appLabFooterBar.torizonCloudPanelApp',
+    defaultMessage: 'Cloud app: {app}',
+    description: 'Last app installed from Torizon Cloud',
+  },
+  torizonCloudPanelNotProvisioned: {
+    id: 'appLabFooterBar.torizonCloudPanelNotProvisioned',
+    defaultMessage: 'Not provisioned',
+    description: 'Status shown when the board is not in Torizon Cloud',
+  },
+  torizonCloudPanelOpen: {
+    id: 'appLabFooterBar.torizonCloudPanelOpen',
+    defaultMessage: 'Open',
+    description: 'Button opening the Torizon Cloud web UI',
+  },
+  torizonCloudPanelConfigure: {
+    id: 'appLabFooterBar.torizonCloudPanelConfigure',
+    defaultMessage: 'Configure',
+    description: 'Button opening the Torizon Cloud settings',
+  },
   notificationPanelTitle: {
     id: 'appLabFooterBar.notificationPanelTitle',
     defaultMessage: 'Notifications',

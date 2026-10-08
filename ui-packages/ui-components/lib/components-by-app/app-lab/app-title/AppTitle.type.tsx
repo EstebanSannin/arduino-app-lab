@@ -4,12 +4,14 @@ import {
   CreateAppDialogLogic,
   DeleteAppDialogLogic,
   ExportAppDialogLogic,
+  TorizonCloudPublishDialogLogic,
 } from '../../../dialogs';
 
 export enum AppAction {
   Rename = 'RENAME',
   Duplicate = 'DUPLICATE',
   Export = 'Export',
+  PublishToTorizonCloud = 'PUBLISH_TO_TORIZON_CLOUD',
   Delete = 'DELETE',
 }
 
@@ -24,10 +26,12 @@ export type AppTitleLogic = () => {
   openApp?: (app: AppDetailedInfo) => void;
   onAppNameChange: (value: string) => void;
   onAppAction: (action: AppAction) => void;
+  canPublishToTorizonCloud?: boolean;
   onResetAppName: () => void;
   onRenameApp: () => void;
   onUpdateAppIcon: (emoji: string) => Promise<boolean>;
   deleteAppDialogLogic: DeleteAppDialogLogic;
   createAppDialogLogic: CreateAppDialogLogic;
   exportAppDialogLogic: ExportAppDialogLogic;
+  torizonCloudPublishDialogLogic: TorizonCloudPublishDialogLogic;
 };

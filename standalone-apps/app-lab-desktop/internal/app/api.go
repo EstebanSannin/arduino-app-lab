@@ -27,6 +27,7 @@ import (
 	"app-lab-desktop/internal/network/ethernet"
 	"app-lab-desktop/internal/network/wifi"
 	"app-lab-desktop/internal/terminal"
+	"app-lab-desktop/internal/torizoncloud"
 	"app-lab-desktop/internal/update"
 )
 
@@ -439,6 +440,46 @@ func (a *App) ImportAppFromPath(filePath string) (string, error) {
 	}
 
 	return arduinoapps.ImportAppFromPath(a.ctx(), orchestratorURL, filePath, a.hostReads)
+}
+
+// Torizon Cloud integration
+func (a *App) GetTorizonCloudStatus() (*torizoncloud.Status, error) {
+	return torizoncloud.GetStatus(a.ctx(), a.selectedBoard.Conn)
+}
+
+// ImportTorizonCloudCredentials returns false when the dialog is cancelled.
+func (a *App) ImportTorizonCloudCredentials() (bool, error) {
+	filePath, err := runtime.OpenFileDialog(a.ctx(), runtime.OpenDialogOptions{
+		Title:   "Import Torizon Cloud API client",
+		Filters: []runtime.FileFilter{{DisplayName: "JSON (*.json)", Pattern: "*.json"}},
+	})
+	if err != nil || filePath == "" {
+		return false, err
+	}
+	return true, torizoncloud.ImportCredentials(filePath)
+}
+
+func (a *App) DeleteTorizonCloudCredentials() error {
+	return torizoncloud.DeleteCredentials()
+}
+
+func (a *App) ProvisionTorizonCloudDevice(name string) error {
+	return torizoncloud.Provision(a.ctx(), a.selectedBoard.Conn, name)
+}
+
+func (a *App) PrepareTorizonCloudRelease(appID string) (*torizoncloud.Release, error) {
+	orchestratorURL, err := a.InferOrchestratorURL()
+	if err != nil {
+		return nil, fmt.Errorf("failed to get orchestrator URL for publish app: %w", err)
+	}
+
+	return torizoncloud.PrepareRelease(a.ctx(), orchestratorURL, appID)
+}
+
+func (a *App) UploadTorizonCloudRelease() (*torizoncloud.Release, error) {
+	return torizoncloud.UploadRelease(a.ctx(), func(percent int) {
+		a.emit("torizon-cloud:upload-progress", percent)
+	})
 }
 
 // Edge Impulse integration

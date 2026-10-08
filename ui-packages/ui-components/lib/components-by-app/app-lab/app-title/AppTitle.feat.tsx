@@ -5,6 +5,7 @@ import {
   Duplicate,
   Pencil,
   Power,
+  Torizon,
 } from '@cloud-editor-mono/images/assets/icons';
 import { canRenameApp } from '@cloud-editor-mono/infrastructure';
 import clsx from 'clsx';
@@ -20,6 +21,7 @@ import {
   CreateAppDialog,
   DeleteAppDialog,
   ExportAppDialog,
+  TorizonCloudPublishDialog,
 } from '../../../dialogs';
 import { DropdownMenuButton } from '../../../essential/dropdown-menu/DropdownMenuButton';
 import { Input, InputStyle } from '../../../essential/input';
@@ -50,6 +52,7 @@ const AppTitle: React.FC<AppTitleProps> = (props: AppTitleProps) => {
     appStatus,
     deleteAppDialogLogic,
     exportAppDialogLogic,
+    torizonCloudPublishDialogLogic,
     createAppDialogLogic,
     name,
     editing,
@@ -59,6 +62,7 @@ const AppTitle: React.FC<AppTitleProps> = (props: AppTitleProps) => {
     setAsDefaultApp,
     onAppNameChange,
     onAppAction,
+    canPublishToTorizonCloud,
     onResetAppName,
     onRenameApp,
     onUpdateAppIcon,
@@ -118,6 +122,7 @@ const AppTitle: React.FC<AppTitleProps> = (props: AppTitleProps) => {
     >
       <DeleteAppDialog logic={deleteAppDialogLogic} />
       <ExportAppDialog logic={exportAppDialogLogic} />
+      <TorizonCloudPublishDialog logic={torizonCloudPublishDialogLogic} />
       <CreateAppDialog logic={createAppDialogLogic} />
       <div className={styles['app-icon']}>
         {app?.example ? (
@@ -211,6 +216,17 @@ const AppTitle: React.FC<AppTitleProps> = (props: AppTitleProps) => {
                   label: formatMessage(appTitleMessages.actionExport),
                   labelPrefix: <Download />,
                 },
+                ...(canPublishToTorizonCloud
+                  ? [
+                      {
+                        id: AppAction.PublishToTorizonCloud,
+                        label: formatMessage(
+                          appTitleMessages.actionPublishToTorizonCloud,
+                        ),
+                        labelPrefix: <Torizon />,
+                      },
+                    ]
+                  : []),
                 ...(!app?.example
                   ? [
                       {

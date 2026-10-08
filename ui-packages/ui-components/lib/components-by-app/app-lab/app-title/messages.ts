@@ -16,6 +16,11 @@ export const appTitleMessages = defineMessages({
     defaultMessage: 'Export App',
     description: 'Export the app',
   },
+  actionPublishToTorizonCloud: {
+    id: 'appTitle.actionPublishToTorizonCloud',
+    defaultMessage: 'Publish to Torizon Cloud',
+    description: 'Publish a release of the app to Torizon Cloud',
+  },
   actionDelete: {
     id: 'appTitle.actionDelete',
     defaultMessage: 'Delete',

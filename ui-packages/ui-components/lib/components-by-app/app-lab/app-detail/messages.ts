@@ -1,6 +1,11 @@
 import { defineMessages } from 'react-intl';
 
 export const messages = defineMessages({
+  publishToTorizonCloudButton: {
+    id: 'appLabAppDetail.publishToTorizonCloudButton',
+    defaultMessage: 'Publish to Torizon Cloud',
+    description: 'Button publishing the app to Torizon Cloud',
+  },
   copyAndEditButton: {
     id: 'app-detail.copy-and-edit-button',
     defaultMessage: 'Copy and edit app',

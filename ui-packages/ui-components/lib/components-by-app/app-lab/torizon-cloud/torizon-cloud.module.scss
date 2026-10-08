@@ -1,0 +1,18 @@
+.icon {
+  width: 20px;
+  height: 20px;
+  color: var(--text-accent, #25c2c7);
+}
+
+.description span {
+  font-weight: 400 !important;
+}
+
+.badge {
+  width: fit-content;
+}
+
+.error {
+  padding: 4px 8px;
+  color: var(--feedback-error-default, #ff8878);
+}

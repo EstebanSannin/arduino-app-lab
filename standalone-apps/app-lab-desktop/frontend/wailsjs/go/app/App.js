@@ -154,6 +154,10 @@ export function DeleteRefreshToken(arg1) {
   return window['go']['app']['App']['DeleteRefreshToken'](arg1);
 }
 
+export function DeleteTorizonCloudCredentials() {
+  return window['go']['app']['App']['DeleteTorizonCloudCredentials']();
+}
+
 export function DisableNetworkMode(arg1) {
   return window['go']['app']['App']['DisableNetworkMode'](arg1);
 }
@@ -294,6 +298,10 @@ export function GetTitle() {
   return window['go']['app']['App']['GetTitle']();
 }
 
+export function GetTorizonCloudStatus() {
+  return window['go']['app']['App']['GetTorizonCloudStatus']();
+}
+
 export function GetWiFiStatus() {
   return window['go']['app']['App']['GetWiFiStatus']();
 }
@@ -312,6 +320,10 @@ export function ImportFileToAppFromPath(arg1, arg2, arg3, arg4) {
 
 export function ImportFolderToAppFromPath(arg1, arg2, arg3, arg4) {
   return window['go']['app']['App']['ImportFolderToAppFromPath'](arg1, arg2, arg3, arg4);
+}
+
+export function ImportTorizonCloudCredentials() {
+  return window['go']['app']['App']['ImportTorizonCloudCredentials']();
 }
 
 export function InferOrchestratorURL() {
@@ -384,6 +396,14 @@ export function OpenFile(arg1) {
 
 export function OpenUIWhenReady(arg1, arg2) {
   return window['go']['app']['App']['OpenUIWhenReady'](arg1, arg2);
+}
+
+export function PrepareTorizonCloudRelease(arg1) {
+  return window['go']['app']['App']['PrepareTorizonCloudRelease'](arg1);
+}
+
+export function ProvisionTorizonCloudDevice(arg1) {
+  return window['go']['app']['App']['ProvisionTorizonCloudDevice'](arg1);
 }
 
 export function RebootBoard(arg1) {
@@ -476,6 +496,10 @@ export function UnwatchApp(arg1) {
 
 export function UnwatchAppsDir(arg1) {
   return window['go']['app']['App']['UnwatchAppsDir'](arg1);
+}
+
+export function UploadTorizonCloudRelease() {
+  return window['go']['app']['App']['UploadTorizonCloudRelease']();
 }
 
 export function WatchApp(arg1) {

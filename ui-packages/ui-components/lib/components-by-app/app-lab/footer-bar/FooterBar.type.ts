@@ -5,6 +5,7 @@ import { LspId, LspState } from '../../shared';
 import { BoardItem } from '../board-section';
 import { Action, ActionStatus } from '../runtime-actions';
 import { Board } from '../setup';
+import { TorizonCloudStatus } from '../torizon-cloud';
 
 type SystemResourcesId = 'root' | 'user' | 'ram' | 'cpu' | 'npu' | 'network';
 
@@ -85,6 +86,9 @@ export type FooterBarLogic = () => {
   onOpenApp: (app: AppDetailedInfo) => void;
   onOpenAiAssistant: () => void;
   aiAssistantActive: boolean;
+  torizonCloudStatus?: TorizonCloudStatus;
+  onOpenTorizonCloud: () => void;
+  onOpenTorizonCloudSettings: () => void;
   agentModeTooltip: AgentModeTooltipLogic;
   // Keeps the "Agent Mode" entry shining until it has been clicked once.
   agentModeEntryShine: boolean;

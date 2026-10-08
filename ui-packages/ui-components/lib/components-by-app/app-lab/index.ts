@@ -60,4 +60,5 @@ export * from './side-panel';
 export * from './sketch-library-card';
 export * from './tabs';
 export * from './top-bar';
+export * from './torizon-cloud';
 export * from './workspace-layout';

@@ -29,6 +29,7 @@ import {
   DropdownMenuButton,
   NetworkSettingsDialog,
   PasswordDialog,
+  TorizonCloudSettings,
   UnsupportedCarrierDialog,
   XXSmall,
   XXXSmall,
@@ -77,6 +78,7 @@ export const Settings: React.FC<SettingsProps> = ({
     networkSettingsLogic,
     systemSettingsLogic,
     passwordSettingsLogic,
+    torizonCloudSettingsLogic,
     onOpenExternal,
   } = settingsLogic();
 
@@ -384,6 +386,11 @@ export const Settings: React.FC<SettingsProps> = ({
           </SettingsSection.Card>
         </section>
       )}
+      <TorizonCloudSettings
+        logic={torizonCloudSettingsLogic}
+        boardName={boardName}
+        onOpenExternal={onOpenExternal}
+      />
       {!isVentunoQ && (
         <section>
           <SettingsSection.Title
