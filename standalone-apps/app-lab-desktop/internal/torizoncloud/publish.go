@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"bytes"
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -30,6 +31,8 @@ type Release struct {
 	Size       int64  `json:"size"`
 	// Published are the versions of this app already in Torizon Cloud.
 	Published []string `json:"published"`
+	// FromReadme tells whether the package description is the app's README.
+	FromReadme bool `json:"fromReadme"`
 }
 
 // releaseDir is where the board writes the release archive.
@@ -38,17 +41,19 @@ const releaseDir = "/tmp/applab-torizon-release"
 // prepared is the release built by PrepareRelease, waiting for UploadRelease.
 var prepared struct {
 	sync.Mutex
-	release *Release
-	data    []byte
+	release     *Release
+	data        []byte
+	description string
 }
 
 // PrepareRelease builds a release of the app on the board, ready to be uploaded,
 // passing each line of the build output to onLog.
 func PrepareRelease(ctx context.Context, conn remote.RemoteConn, orchestratorURL, appID string, onLog func(line string)) (*Release, error) {
-	appPath, err := getAppPath(ctx, orchestratorURL, appID)
+	app, err := getApp(ctx, orchestratorURL, appID)
 	if err != nil {
 		return nil, err
 	}
+	appPath := app.Path
 	fileName, data, err := buildRelease(ctx, conn, appPath, onLog)
 	if err != nil {
 		return nil, err
@@ -64,7 +69,10 @@ func PrepareRelease(ctx context.Context, conn remote.RemoteConn, orchestratorURL
 
 	prepared.Lock()
 	defer prepared.Unlock()
-	prepared.release, prepared.data = rel, data
+	description, fromReadme := packageDescription(ctx, conn, appPath, app.Description)
+	rel.FromReadme = fromReadme
+
+	prepared.release, prepared.data, prepared.description = rel, data, description
 	return rel, nil
 }
 
@@ -91,22 +99,30 @@ func UploadRelease(ctx context.Context, onProgress func(percent int)) (*Release,
 	if err := c.call(ctx, "POST", "/packages?"+q.Encode(), body, "application/octet-stream", nil); err != nil {
 		return nil, fmt.Errorf("failed to upload the release to Torizon Cloud: %w", err)
 	}
-	prepared.release, prepared.data = nil, nil
+	if prepared.description != "" {
+		// The release is in the cloud already: a missing description is not a failure
+		comment, _ := json.Marshal(map[string]string{"comment": prepared.description})
+		_ = c.call(ctx, "PATCH", "/packages/"+url.PathEscape(rel.Name+"-"+rel.Version), bytes.NewReader(comment), "application/json", nil)
+	}
+	prepared.release, prepared.data, prepared.description = nil, nil, ""
 	return rel, nil
 }
 
-func getAppPath(ctx context.Context, orchestratorURL, appID string) (string, error) {
+type appInfo struct {
+	Path        string `json:"path"`
+	Description string `json:"description"`
+}
+
+func getApp(ctx context.Context, orchestratorURL, appID string) (*appInfo, error) {
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, fmt.Sprintf("%s/v1/apps/%s", orchestratorURL, appID), nil)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
-	var app struct {
-		Path string `json:"path"`
-	}
+	var app appInfo
 	if err := send(req, &app); err != nil {
-		return "", fmt.Errorf("failed to get the app: %w", err)
+		return nil, fmt.Errorf("failed to get the app: %w", err)
 	}
-	return app.Path, nil
+	return &app, nil
 }
 
 // buildRelease builds the release archive with arduino-app-cli on the board.

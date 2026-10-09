@@ -43,6 +43,21 @@ export const messages = defineMessages({
     defaultMessage: 'Upload to Torizon Cloud',
     description: 'Publish step: upload the release',
   },
+  description: {
+    id: 'appLab.torizonCloudPublishDialog.description',
+    defaultMessage: 'Description',
+    description: 'Label of the package description source',
+  },
+  descriptionReadme: {
+    id: 'appLab.torizonCloudPublishDialog.descriptionReadme',
+    defaultMessage: "The app's README",
+    description: 'The package description is the README of the app',
+  },
+  descriptionApp: {
+    id: 'appLab.torizonCloudPublishDialog.descriptionApp',
+    defaultMessage: "The app's description",
+    description: 'The package description is the short description of the app',
+  },
   publishedVersions: {
     id: 'appLab.torizonCloudPublishDialog.publishedVersions',
     defaultMessage: 'Already in Torizon Cloud',

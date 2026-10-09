@@ -161,6 +161,14 @@ export const TorizonCloudPublishDialog: React.FC<
           <dd>{release.hardwareId}</dd>
           <dt>{formatMessage(messages.size)}</dt>
           <dd>{formatSize(release.size)}</dd>
+          <dt>{formatMessage(messages.description)}</dt>
+          <dd>
+            {formatMessage(
+              release.fromReadme
+                ? messages.descriptionReadme
+                : messages.descriptionApp,
+            )}
+          </dd>
           <dt>{formatMessage(messages.publishedVersions)}</dt>
           <dd>
             {release.published.length
