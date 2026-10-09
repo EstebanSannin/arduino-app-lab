@@ -110,10 +110,16 @@ func Provision(ctx context.Context, conn remote.RemoteConn, name string) error {
 	if err := stdin.Close(); err != nil {
 		return err
 	}
+	// Read the output before waiting: closing the pipes early breaks the command
+	errOut := make(chan []byte)
+	go func() {
+		b, _ := io.ReadAll(stderr)
+		errOut <- b
+	}()
+	_, _ = io.Copy(io.Discard, stdout)
+	msg := strings.TrimSpace(string(<-errOut))
 	if err := closer(); err != nil {
-		out, _ := io.ReadAll(stdout)
-		errOut, _ := io.ReadAll(stderr)
-		return fmt.Errorf("provisioning failed: %w: %s %s", err, out, errOut)
+		return fmt.Errorf("provisioning failed: %w: %s", err, msg)
 	}
 	return nil
 }
