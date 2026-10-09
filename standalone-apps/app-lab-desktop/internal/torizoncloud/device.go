@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"regexp"
 	"strings"
 
 	"github.com/arduino/arduino-app-cli/pkg/board/remote"
@@ -117,11 +118,29 @@ func Provision(ctx context.Context, conn remote.RemoteConn, name string) error {
 		errOut <- b
 	}()
 	_, _ = io.Copy(io.Discard, stdout)
-	msg := strings.TrimSpace(string(<-errOut))
+	msg := lastLine(<-errOut)
 	if err := closer(); err != nil {
-		return fmt.Errorf("provisioning failed: %w: %s", err, msg)
+		if strings.Contains(msg, "conflicting_device") {
+			return fmt.Errorf("a device named %q already exists in Torizon Cloud: delete it there or rename this board", name)
+		}
+		return fmt.Errorf("provisioning failed: %s", msg)
 	}
 	return nil
+}
+
+var ansiEscape = regexp.MustCompile(`\x1b\[[0-9;]*m`)
+
+// lastLine returns the last non-empty line of the helper's output, without colors.
+func lastLine(out []byte) string {
+	lines := strings.FieldsFunc(ansiEscape.ReplaceAllString(string(out), ""), func(r rune) bool {
+		return r == '\n' || r == '\r'
+	})
+	for i := len(lines) - 1; i >= 0; i-- {
+		if l := strings.TrimSpace(lines[i]); l != "" {
+			return l
+		}
+	}
+	return "unknown error"
 }
 
 // provisioningToken accepts the token as a JSON string or as {"token": ...}.
