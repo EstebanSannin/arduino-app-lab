@@ -16,3 +16,15 @@
   padding: 4px 8px;
   color: var(--feedback-error-default, #ff8878);
 }
+
+.dialog {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 480px;
+  padding: 0 46px !important;
+}
+
+.dialog-description {
+  color: var(--text-subtle, #c9d2d2);
+}

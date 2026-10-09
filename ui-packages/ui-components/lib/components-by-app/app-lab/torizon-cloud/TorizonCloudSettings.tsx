@@ -1,4 +1,5 @@
 import { Success, Torizon } from '@cloud-editor-mono/images/assets/icons';
+import { useState } from 'react';
 
 import { useI18n, XXSmall } from '../../shared';
 import { Badge, BadgeStyle, BadgeVariant } from '../essential/badge';
@@ -12,6 +13,7 @@ import { SettingsSection } from '../settings-section';
 import { torizonCloudMessages as messages } from './messages';
 import styles from './torizon-cloud.module.scss';
 import { UseTorizonCloudLogic } from './torizonCloud.type';
+import { TorizonCloudProvisionDialog } from './TorizonCloudProvisionDialog';
 
 export const TORIZON_CLOUD_URL = 'https://app.torizon.io';
 
@@ -29,6 +31,7 @@ export const TorizonCloudSettings: React.FC<TorizonCloudSettingsProps> = ({
   const { formatMessage } = useI18n();
   const { status, isLoading, error, importCredentials, provision, disconnect } =
     logic();
+  const [provisionOpen, setProvisionOpen] = useState(false);
 
   if (!status) {
     return null;
@@ -59,14 +62,21 @@ export const TorizonCloudSettings: React.FC<TorizonCloudSettingsProps> = ({
         )}
         {status.configured && !status.provisioned && (
           <SettingsSection.Row label={formatMessage(messages.provisionTitle)}>
+            <TorizonCloudProvisionDialog
+              open={provisionOpen}
+              onOpenChange={setProvisionOpen}
+              defaultName={boardName}
+              isLoading={isLoading}
+              error={error}
+              onProvision={provision}
+            />
             <Button
-              loading={isLoading}
               disabled={isLoading}
               variant={ButtonVariant.Secondary}
               size={ButtonSize.XXSmall}
-              onClick={(): void => provision(boardName ?? '')}
+              onClick={(): void => setProvisionOpen(true)}
             >
-              {formatMessage(messages.provisionAction, { boardName })}
+              {formatMessage(messages.provisionAction)}
             </Button>
           </SettingsSection.Row>
         )}
@@ -107,7 +117,9 @@ export const TorizonCloudSettings: React.FC<TorizonCloudSettingsProps> = ({
             label={formatMessage(messages.openAction)}
           />
         </SettingsSection.Row>
-        {error && <XXSmall className={styles['error']}>{error}</XXSmall>}
+        {error && !provisionOpen && (
+          <XXSmall className={styles['error']}>{error}</XXSmall>
+        )}
         {status.configured && (
           <>
             <SettingsSection.Divider />

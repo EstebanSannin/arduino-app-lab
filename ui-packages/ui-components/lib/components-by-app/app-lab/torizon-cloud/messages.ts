@@ -38,8 +38,14 @@ export const torizonCloudMessages = defineMessages({
   },
   provisionAction: {
     id: 'appLabSettings.torizonCloud.provisionAction',
-    defaultMessage: 'Provision as {boardName}',
+    defaultMessage: 'Provision',
     description: 'Button to provision the board in Torizon Cloud',
+  },
+  provisionDescription: {
+    id: 'appLabSettings.torizonCloud.provisionDescription',
+    defaultMessage:
+      'Register this board in your Torizon Cloud account. The name must be unique in the account.',
+    description: 'Description of the Torizon Cloud provisioning dialog',
   },
   connectedBadge: {
     id: 'appLabSettings.torizonCloud.connectedBadge',
