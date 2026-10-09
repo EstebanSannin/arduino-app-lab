@@ -52,6 +52,16 @@ export const torizonCloudMessages = defineMessages({
     defaultMessage: 'Registering this board in Torizon Cloud...',
     description: 'Shown while the board is provisioned',
   },
+  provisioned: {
+    id: 'appLabSettings.torizonCloud.provisioned',
+    defaultMessage: 'This board is now in Torizon Cloud as {name}',
+    description: 'Shown when the board has been provisioned',
+  },
+  done: {
+    id: 'appLabSettings.torizonCloud.done',
+    defaultMessage: 'Done',
+    description: 'Button closing the provisioning dialog',
+  },
   connectedBadge: {
     id: 'appLabSettings.torizonCloud.connectedBadge',
     defaultMessage: 'Connected',

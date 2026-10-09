@@ -47,6 +47,16 @@ export const TorizonCloudSettings: React.FC<TorizonCloudSettingsProps> = ({
         variant="secondary"
       />
       <SettingsSection.Card>
+        <TorizonCloudProvisionDialog
+          open={provisionOpen}
+          onOpenChange={setProvisionOpen}
+          defaultName={boardName}
+          device={device}
+          isLoading={isLoading}
+          error={error}
+          onProvision={provision}
+          onOpenTorizonCloud={(): void => onOpenExternal(TORIZON_CLOUD_URL)}
+        />
         {!status.configured && (
           <SettingsSection.Row label={formatMessage(messages.connectTitle)}>
             <Button
@@ -62,14 +72,6 @@ export const TorizonCloudSettings: React.FC<TorizonCloudSettingsProps> = ({
         )}
         {status.configured && !status.provisioned && (
           <SettingsSection.Row label={formatMessage(messages.provisionTitle)}>
-            <TorizonCloudProvisionDialog
-              open={provisionOpen}
-              onOpenChange={setProvisionOpen}
-              defaultName={boardName}
-              isLoading={isLoading}
-              error={error}
-              onProvision={provision}
-            />
             <Button
               disabled={isLoading}
               variant={ButtonVariant.Secondary}

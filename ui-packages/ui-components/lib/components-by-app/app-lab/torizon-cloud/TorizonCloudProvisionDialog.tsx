@@ -1,3 +1,4 @@
+import { Success } from '@cloud-editor-mono/images/assets/icons';
 import { useEffect, useState } from 'react';
 
 import { AppLabDialog } from '../../../dialogs/app-lab/app-lab-dialog/AppLabDialog';
@@ -5,17 +6,20 @@ import { ErrorBanner } from '../../../error-banner/ErrorBanner';
 import { Input, InputStyle } from '../../../essential/input';
 import { ProgressBar } from '../../../essential/progress-bar';
 import { useI18n, XXSmall } from '../../shared';
-import { Button, ButtonSize } from '../essential/button';
+import { Button, ButtonSize, ButtonVariant } from '../essential/button';
 import { torizonCloudMessages as messages } from './messages';
 import styles from './torizon-cloud.module.scss';
+import { TorizonCloudDevice } from './torizonCloud.type';
 
 interface TorizonCloudProvisionDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   defaultName?: string;
+  device?: TorizonCloudDevice;
   isLoading: boolean;
   error?: string;
   onProvision: (name: string) => void;
+  onOpenTorizonCloud: () => void;
 }
 
 export const TorizonCloudProvisionDialog: React.FC<
@@ -24,9 +28,11 @@ export const TorizonCloudProvisionDialog: React.FC<
   open,
   onOpenChange,
   defaultName,
+  device,
   isLoading,
   error,
   onProvision,
+  onOpenTorizonCloud,
 }: TorizonCloudProvisionDialogProps) => {
   const { formatMessage } = useI18n();
   const [name, setName] = useState('');
@@ -34,6 +40,30 @@ export const TorizonCloudProvisionDialog: React.FC<
   useEffect(() => {
     if (open) setName(defaultName ?? '');
   }, [open, defaultName]);
+
+  const footer = device ? (
+    <>
+      <Button
+        variant={ButtonVariant.Secondary}
+        size={ButtonSize.Small}
+        onClick={onOpenTorizonCloud}
+      >
+        {formatMessage(messages.openAction)}
+      </Button>
+      <Button size={ButtonSize.Small} onClick={(): void => onOpenChange(false)}>
+        {formatMessage(messages.done)}
+      </Button>
+    </>
+  ) : (
+    <Button
+      loading={isLoading}
+      size={ButtonSize.Small}
+      disabled={isLoading || !name.trim()}
+      type="submit"
+    >
+      {formatMessage(messages.provisionAction)}
+    </Button>
+  );
 
   return (
     <AppLabDialog
@@ -43,42 +73,50 @@ export const TorizonCloudProvisionDialog: React.FC<
       }}
       title={formatMessage(messages.provisionTitle)}
       onSubmit={(): void => onProvision(name.trim())}
-      footer={
-        <Button
-          loading={isLoading}
-          size={ButtonSize.Small}
-          disabled={isLoading || !name.trim()}
-          type="submit"
-        >
-          {formatMessage(messages.provisionAction)}
-        </Button>
-      }
+      footer={footer}
       classes={{ body: styles['dialog'] }}
     >
-      <XXSmall className={styles['dialog-description']}>
-        {formatMessage(messages.provisionDescription)}
-      </XXSmall>
-      <Input
-        inputStyle={InputStyle.AppLab}
-        id="torizon-cloud-device-name"
-        value={name}
-        onChange={(value): void => setName(value as string)}
-        label={formatMessage(messages.deviceName)}
-        disabled={isLoading}
-        /* eslint-disable-next-line jsx-a11y/no-autofocus */
-        autoFocus
-      />
-      {isLoading && (
+      {device ? (
+        <>
+          <XXSmall className={styles['dialog-success']}>
+            <Success />
+            {formatMessage(messages.provisioned, { name: device.name })}
+          </XXSmall>
+          <dl className={styles['dialog-recap']}>
+            <dt>{formatMessage(messages.deviceName)}</dt>
+            <dd>{device.name}</dd>
+            <dt>{formatMessage(messages.deviceId)}</dt>
+            <dd>{device.id}</dd>
+          </dl>
+        </>
+      ) : (
         <>
           <XXSmall className={styles['dialog-description']}>
-            {formatMessage(messages.provisioning)}
+            {formatMessage(messages.provisionDescription)}
           </XXSmall>
-          <div className={styles['progress']}>
-            <ProgressBar active />
-          </div>
+          <Input
+            inputStyle={InputStyle.AppLab}
+            id="torizon-cloud-device-name"
+            value={name}
+            onChange={(value): void => setName(value as string)}
+            label={formatMessage(messages.deviceName)}
+            disabled={isLoading}
+            /* eslint-disable-next-line jsx-a11y/no-autofocus */
+            autoFocus
+          />
+          {isLoading && (
+            <>
+              <XXSmall className={styles['dialog-description']}>
+                {formatMessage(messages.provisioning)}
+              </XXSmall>
+              <div className={styles['progress']}>
+                <ProgressBar active />
+              </div>
+            </>
+          )}
+          {error && !isLoading && <ErrorBanner message={error} />}
         </>
       )}
-      {error && !isLoading && <ErrorBanner message={error} />}
     </AppLabDialog>
   );
 };

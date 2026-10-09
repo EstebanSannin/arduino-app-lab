@@ -35,3 +35,36 @@
   overflow: hidden;
   border-radius: 2px;
 }
+
+.dialog-success {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--feedback-success-default, #15c1ab);
+  font-weight: 600;
+
+  svg {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.dialog-recap {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 8px 24px;
+  margin: 0;
+  padding: 16px;
+  border-radius: 8px;
+  background: var(--surface-bg-below-1, #171e21);
+  font-size: 14px;
+
+  dt {
+    color: var(--text-subtle, #c9d2d2);
+  }
+
+  dd {
+    margin: 0;
+  }
+}
