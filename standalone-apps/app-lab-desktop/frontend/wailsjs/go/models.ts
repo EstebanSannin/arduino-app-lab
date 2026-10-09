@@ -773,6 +773,7 @@ export namespace torizoncloud {
 	    version: string;
 	    hardwareId: string;
 	    size: number;
+	    published: string[];
 	
 	    static createFrom(source: any = {}) {
 	        return new Release(source);
@@ -784,6 +785,7 @@ export namespace torizoncloud {
 	        this.version = source["version"];
 	        this.hardwareId = source["hardwareId"];
 	        this.size = source["size"];
+	        this.published = source["published"];
 	    }
 	}
 	export class Status {

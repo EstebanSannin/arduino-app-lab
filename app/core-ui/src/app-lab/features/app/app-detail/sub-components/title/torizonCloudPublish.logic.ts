@@ -1,4 +1,5 @@
 import {
+  onTorizonCloudBuildLog,
   onTorizonCloudUploadProgress,
   openLinkExternal,
   prepareTorizonCloudRelease,
@@ -13,6 +14,8 @@ import {
 } from '@cloud-editor-mono/ui-components/lib/components-by-app/app-lab';
 import { useCallback, useState } from 'react';
 
+const MAX_LOG_LINES = 200;
+
 const errorMessage = (error: unknown): string =>
   error instanceof Error ? error.message : String(error);
 
@@ -26,6 +29,7 @@ export const useTorizonCloudPublish = (
   const [stage, setStage] = useState<TorizonCloudPublishStage>('preparing');
   const [release, setRelease] = useState<TorizonCloudRelease>();
   const [progress, setProgress] = useState(0);
+  const [buildLog, setBuildLog] = useState<string[]>([]);
   const [error, setError] = useState<string>();
 
   const fail = (e: unknown): void => {
@@ -39,12 +43,17 @@ export const useTorizonCloudPublish = (
     setStage('preparing');
     setRelease(undefined);
     setError(undefined);
+    setBuildLog([]);
+    const stopLog = onTorizonCloudBuildLog((line) =>
+      setBuildLog((log) => [...log.slice(-MAX_LOG_LINES + 1), line]),
+    );
     prepareTorizonCloudRelease(app.id)
       .then((r) => {
         setRelease(r);
         setStage('ready');
       })
-      .catch(fail);
+      .catch(fail)
+      .finally(stopLog);
   }, [app]);
 
   const onPublish = (): void => {
@@ -65,12 +74,13 @@ export const useTorizonCloudPublish = (
       stage,
       release,
       progress,
+      buildLog,
       error,
       onPublish,
       onOpenTorizonCloud: (): void => openLinkExternal(TORIZON_CLOUD_URL),
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [open, app, stage, release, progress, error],
+    [open, app, stage, release, progress, buildLog, error],
   );
 
   return { startPublish, publishDialogLogic };

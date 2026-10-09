@@ -35,6 +35,11 @@ export let onTorizonCloudUploadProgress: TorizonCloudService['onTorizonCloudUplo
     throw new Error('onTorizonCloudUploadProgress service not implemented');
   };
 
+export let onTorizonCloudBuildLog: TorizonCloudService['onTorizonCloudBuildLog'] =
+  function () {
+    throw new Error('onTorizonCloudBuildLog service not implemented');
+  };
+
 export const setTorizonCloudService = (service: TorizonCloudService): void => {
   getTorizonCloudStatus = service.getTorizonCloudStatus;
   importTorizonCloudCredentials = service.importTorizonCloudCredentials;
@@ -43,4 +48,5 @@ export const setTorizonCloudService = (service: TorizonCloudService): void => {
   prepareTorizonCloudRelease = service.prepareTorizonCloudRelease;
   uploadTorizonCloudRelease = service.uploadTorizonCloudRelease;
   onTorizonCloudUploadProgress = service.onTorizonCloudUploadProgress;
+  onTorizonCloudBuildLog = service.onTorizonCloudBuildLog;
 };

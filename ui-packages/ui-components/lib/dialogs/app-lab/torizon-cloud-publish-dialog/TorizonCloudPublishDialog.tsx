@@ -4,6 +4,7 @@ import {
   TriangleSharp,
 } from '@cloud-editor-mono/images/assets/icons';
 import clsx from 'clsx';
+import { useEffect, useRef } from 'react';
 import { IntRange } from 'type-fest';
 
 import { Button, ButtonVariant } from '../../../components-by-app/app-lab';
@@ -29,6 +30,7 @@ export type TorizonCloudPublishDialogLogic = () => {
   stage: TorizonCloudPublishStage;
   release?: TorizonCloudRelease;
   progress: number;
+  buildLog: string[];
   error?: string;
   onPublish: () => void;
   onOpenTorizonCloud: () => void;
@@ -49,11 +51,23 @@ export const TorizonCloudPublishDialog: React.FC<
     stage,
     release,
     progress,
+    buildLog,
     error,
     onPublish,
     onOpenTorizonCloud,
   } = logic();
   const { formatMessage } = useI18n();
+  const logRef = useRef<HTMLPreElement>(null);
+
+  useEffect(() => {
+    logRef.current?.scrollTo({ top: logRef.current.scrollHeight });
+  }, [buildLog]);
+
+  const step = (done: boolean, active: boolean): string =>
+    clsx(styles['step'], {
+      [styles['step-done']]: done,
+      [styles['step-active']]: active,
+    });
 
   const close = (): void => onOpenChange(false);
 
@@ -119,7 +133,25 @@ export const TorizonCloudPublishDialog: React.FC<
       >
         {formatMessage(messages[stage])}
       </p>
-      {release && stage !== 'error' && (
+      {stage !== 'error' && (
+        <ol className={styles['steps']}>
+          <li className={step(stage !== 'preparing', stage === 'preparing')}>
+            {stage !== 'preparing' ? <Success /> : <span />}
+            {formatMessage(messages.stepBuild)}
+          </li>
+          <li className={step(stage === 'published', stage === 'uploading')}>
+            {stage === 'published' ? <Success /> : <span />}
+            {formatMessage(messages.stepUpload)}
+            {stage === 'uploading' && ` ${progress}%`}
+          </li>
+        </ol>
+      )}
+      {stage === 'preparing' && buildLog.length > 0 && (
+        <pre ref={logRef} className={styles['log']}>
+          {buildLog.join('\n')}
+        </pre>
+      )}
+      {release && stage !== 'error' && stage !== 'preparing' && (
         <dl className={styles['recap']}>
           <dt>{formatMessage(messages.package)}</dt>
           <dd>{release.name}</dd>
@@ -129,6 +161,12 @@ export const TorizonCloudPublishDialog: React.FC<
           <dd>{release.hardwareId}</dd>
           <dt>{formatMessage(messages.size)}</dt>
           <dd>{formatSize(release.size)}</dd>
+          <dt>{formatMessage(messages.publishedVersions)}</dt>
+          <dd>
+            {release.published.length
+              ? release.published.join(', ')
+              : formatMessage(messages.noneYet)}
+          </dd>
         </dl>
       )}
       {(stage === 'preparing' || stage === 'uploading') && (

@@ -33,6 +33,26 @@ export const messages = defineMessages({
     defaultMessage: 'The app could not be published.',
     description: 'Shown when publishing fails',
   },
+  stepBuild: {
+    id: 'appLab.torizonCloudPublishDialog.stepBuild',
+    defaultMessage: 'Build the release on the board',
+    description: 'Publish step: build the release',
+  },
+  stepUpload: {
+    id: 'appLab.torizonCloudPublishDialog.stepUpload',
+    defaultMessage: 'Upload to Torizon Cloud',
+    description: 'Publish step: upload the release',
+  },
+  publishedVersions: {
+    id: 'appLab.torizonCloudPublishDialog.publishedVersions',
+    defaultMessage: 'Already in Torizon Cloud',
+    description: 'Label of the versions of the app already in Torizon Cloud',
+  },
+  noneYet: {
+    id: 'appLab.torizonCloudPublishDialog.noneYet',
+    defaultMessage: 'No versions yet',
+    description: 'Shown when the app has no versions in Torizon Cloud',
+  },
   package: {
     id: 'appLab.torizonCloudPublishDialog.package',
     defaultMessage: 'Package',

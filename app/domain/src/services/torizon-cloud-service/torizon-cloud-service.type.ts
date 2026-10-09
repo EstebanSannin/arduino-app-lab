@@ -11,4 +11,5 @@ export interface TorizonCloudService {
   prepareTorizonCloudRelease(appId: string): Promise<TorizonCloudRelease>;
   uploadTorizonCloudRelease(): Promise<TorizonCloudRelease>;
   onTorizonCloudUploadProgress(handler: (percent: number) => void): () => void;
+  onTorizonCloudBuildLog(handler: (line: string) => void): () => void;
 }

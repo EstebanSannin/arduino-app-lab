@@ -30,3 +30,6 @@ export const uploadTorizonCloudRelease: TorizonCloudService['uploadTorizonCloudR
 
 export const onTorizonCloudUploadProgress: TorizonCloudService['onTorizonCloudUploadProgress'] =
   (handler) => EventsOn('torizon-cloud:upload-progress', handler);
+
+export const onTorizonCloudBuildLog: TorizonCloudService['onTorizonCloudBuildLog'] =
+  (handler) => EventsOn('torizon-cloud:build-log', handler);

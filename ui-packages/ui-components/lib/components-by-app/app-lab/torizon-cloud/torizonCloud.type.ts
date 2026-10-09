@@ -18,6 +18,7 @@ export interface TorizonCloudRelease {
   version: string;
   hardwareId: string;
   size: number;
+  published: string[];
 }
 
 export type UseTorizonCloudLogic = () => {

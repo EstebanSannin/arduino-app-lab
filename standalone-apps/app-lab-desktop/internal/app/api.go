@@ -473,7 +473,9 @@ func (a *App) PrepareTorizonCloudRelease(appID string) (*torizoncloud.Release, e
 		return nil, fmt.Errorf("failed to get orchestrator URL for publish app: %w", err)
 	}
 
-	return torizoncloud.PrepareRelease(a.ctx(), orchestratorURL, appID)
+	return torizoncloud.PrepareRelease(a.ctx(), a.selectedBoard.Conn, orchestratorURL, appID, func(line string) {
+		a.emit("torizon-cloud:build-log", line)
+	})
 }
 
 func (a *App) UploadTorizonCloudRelease() (*torizoncloud.Release, error) {
