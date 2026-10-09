@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { AppLabDialog } from '../../../dialogs/app-lab/app-lab-dialog/AppLabDialog';
 import { ErrorBanner } from '../../../error-banner/ErrorBanner';
 import { Input, InputStyle } from '../../../essential/input';
+import { ProgressBar } from '../../../essential/progress-bar';
 import { useI18n, XXSmall } from '../../shared';
 import { Button, ButtonSize } from '../essential/button';
 import { torizonCloudMessages as messages } from './messages';
@@ -67,7 +68,17 @@ export const TorizonCloudProvisionDialog: React.FC<
         /* eslint-disable-next-line jsx-a11y/no-autofocus */
         autoFocus
       />
-      {error && <ErrorBanner message={error} />}
+      {isLoading && (
+        <>
+          <XXSmall className={styles['dialog-description']}>
+            {formatMessage(messages.provisioning)}
+          </XXSmall>
+          <div className={styles['progress']}>
+            <ProgressBar active />
+          </div>
+        </>
+      )}
+      {error && !isLoading && <ErrorBanner message={error} />}
     </AppLabDialog>
   );
 };

@@ -28,3 +28,10 @@
 .dialog-description {
   color: var(--text-subtle, #c9d2d2);
 }
+
+.progress {
+  position: relative;
+  height: 4px;
+  overflow: hidden;
+  border-radius: 2px;
+}

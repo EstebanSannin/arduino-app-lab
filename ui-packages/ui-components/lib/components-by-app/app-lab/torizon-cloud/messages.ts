@@ -47,6 +47,11 @@ export const torizonCloudMessages = defineMessages({
       'Register this board in your Torizon Cloud account. The name must be unique in the account.',
     description: 'Description of the Torizon Cloud provisioning dialog',
   },
+  provisioning: {
+    id: 'appLabSettings.torizonCloud.provisioning',
+    defaultMessage: 'Registering this board in Torizon Cloud...',
+    description: 'Shown while the board is provisioned',
+  },
   connectedBadge: {
     id: 'appLabSettings.torizonCloud.connectedBadge',
     defaultMessage: 'Connected',
