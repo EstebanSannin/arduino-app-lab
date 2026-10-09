@@ -77,7 +77,14 @@ export const useTorizonCloudPublish = (
       buildLog,
       error,
       onPublish,
-      onOpenTorizonCloud: (): void => openLinkExternal(TORIZON_CLOUD_URL),
+      onOpenTorizonCloud: (): void =>
+        openLinkExternal(
+          release
+            ? `${TORIZON_CLOUD_URL}/packages/${encodeURIComponent(
+                release.name,
+              )}/${encodeURIComponent(release.version)}`
+            : TORIZON_CLOUD_URL,
+        ),
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [open, app, stage, release, progress, buildLog, error],
