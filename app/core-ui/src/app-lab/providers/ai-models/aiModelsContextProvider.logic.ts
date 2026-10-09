@@ -105,6 +105,8 @@ export function useAiModelsLogic(
     const lookup: { [key: string]: AIModelItem } = {};
     for (const model of installedModels || []) {
       lookup[model.id ?? 'none'] = model;
+      // Daemons >= 0.14 encode the id and give the readable one apart
+      if (model.id_decoded) lookup[model.id_decoded] = model;
     }
     return lookup;
   }, [installedModels]);

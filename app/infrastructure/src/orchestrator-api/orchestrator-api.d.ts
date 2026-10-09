@@ -296,6 +296,7 @@ export interface components {
       brick_ids?: string[] | null;
       description?: string;
       id?: string;
+      id_decoded?: string;
       status?: string;
       is_builtin?: boolean;
       metadata?: {
