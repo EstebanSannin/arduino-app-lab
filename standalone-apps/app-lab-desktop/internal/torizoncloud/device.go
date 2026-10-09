@@ -3,10 +3,12 @@ package torizoncloud
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/arduino/arduino-app-cli/pkg/board/remote"
 )
@@ -38,16 +40,9 @@ func GetStatus(ctx context.Context, conn remote.RemoteConn) (*Status, error) {
 	}
 	status := &Status{Configured: creds != nil}
 
-	out, err := conn.GetCmd("sudo", boardHelper, "status").Output(ctx)
+	board, err := getBoardStatus(ctx, conn)
 	if err != nil {
-		return nil, fmt.Errorf("failed to read the board's Torizon Cloud status: %w", err)
-	}
-	var board struct {
-		Provisioned bool   `json:"provisioned"`
-		DeviceUUID  string `json:"deviceUuid"`
-	}
-	if err := json.Unmarshal(out, &board); err != nil {
-		return nil, fmt.Errorf("unexpected board status %q: %w", out, err)
+		return nil, err
 	}
 	status.Provisioned = board.Provisioned
 	if !board.Provisioned || !status.Configured {
@@ -89,6 +84,23 @@ func GetStatus(ctx context.Context, conn remote.RemoteConn) (*Status, error) {
 	return status, nil
 }
 
+type boardStatus struct {
+	Provisioned bool   `json:"provisioned"`
+	DeviceUUID  string `json:"deviceUuid"`
+}
+
+func getBoardStatus(ctx context.Context, conn remote.RemoteConn) (*boardStatus, error) {
+	out, err := conn.GetCmd("sudo", boardHelper, "status").Output(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read the board's Torizon Cloud status: %w", err)
+	}
+	var board boardStatus
+	if err := json.Unmarshal(out, &board); err != nil {
+		return nil, fmt.Errorf("unexpected board status %q: %w", out, err)
+	}
+	return &board, nil
+}
+
 // Provision registers the board in Torizon Cloud under the given name.
 func Provision(ctx context.Context, conn remote.RemoteConn, name string) error {
 	c, err := newClient(ctx)
@@ -125,7 +137,14 @@ func Provision(ctx context.Context, conn remote.RemoteConn, name string) error {
 		}
 		return fmt.Errorf("provisioning failed: %s", msg)
 	}
-	return nil
+	// aktualizr registers the board a few seconds after the credentials are in place
+	for range 30 {
+		if board, err := getBoardStatus(ctx, conn); err == nil && board.Provisioned {
+			return nil
+		}
+		time.Sleep(time.Second)
+	}
+	return errors.New("the board did not register with Torizon Cloud in time")
 }
 
 var ansiEscape = regexp.MustCompile(`\x1b\[[0-9;]*m`)
