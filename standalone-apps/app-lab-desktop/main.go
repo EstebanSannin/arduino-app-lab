@@ -59,7 +59,7 @@ func main() {
 		WindowStartState: options.Maximised,
 		Mac: &mac.Options{
 			About: &mac.AboutInfo{
-				Title:   "Arduino App Lab",
+				Title:   "App Lab for Torizon (unofficial build)",
 				Message: app.GetAboutMessage(),
 			},
 			Appearance: mac.NSAppearanceNameDarkAqua,

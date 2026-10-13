@@ -4,11 +4,11 @@
         <key>CFBundlePackageType</key>
         <string>APPL</string>
         <key>CFBundleName</key>
-        <string>Arduino App Lab</string>
+        <string>App Lab for Torizon</string>
         <key>CFBundleExecutable</key>
         <string>{{.OutputFilename}}</string>
         <key>CFBundleIdentifier</key>
-        <string>cc.arduino.applab</string>
+        <string>io.github.estebansannin.applab-torizon</string>
         <key>CFBundleVersion</key>
         <string>{{.Info.ProductVersion}}</string>
         <key>CFBundleGetInfoString</key>

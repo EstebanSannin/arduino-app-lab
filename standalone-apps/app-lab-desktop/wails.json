@@ -1,14 +1,16 @@
 {
   "$schema": "https://wails.io/schemas/config.v2.json",
-  "name": "Arduino App Lab",
-  "outputfilename": "ArduinoAppLab",
+  "name": "App Lab for Torizon",
+  "outputfilename": "AppLabTorizon",
   "frontend:install": "yarn install",
   "frontend:build": "yarn build",
   "frontend:dev:watcher": "yarn dev",
   "frontend:dev:serverUrl": "auto",
   "info": {
-    "companyName": "Arduino",
-    "copyright": "Copyright © 2025 Arduino SA",
+    "companyName": "Unofficial build of Arduino App Lab",
+    "productName": "App Lab for Torizon",
+    "productVersion": "0.10.0",
+    "copyright": "Copyright © 2025 Arduino SA and contributors",
     "protocols": [
         {
           "scheme": "arduino-app-lab",

@@ -50,7 +50,14 @@ func NewUpdater(version, userAgent, updateURL string) (*Updater, error) {
 	}, nil
 }
 
+// The desktop self-update is off in this unofficial build: Arduino's channel
+// would replace it with the official App Lab. Board updates are not affected.
+const selfUpdate = false
+
 func (u *Updater) NewVersion(ctx context.Context) (string, error) {
+	if !selfUpdate {
+		return "", nil
+	}
 	runtime.LogInfof(ctx, "Checking new version with user agent '%v'", u.releaser.Headers["User-Agent"])
 	if u.releaser == nil {
 		return "", fmt.Errorf("updater client is not initialized")
@@ -93,6 +100,9 @@ func (u *Updater) NewVersion(ctx context.Context) (string, error) {
 }
 
 func (u *Updater) CheckAndApplyUpdate(ctx context.Context, showConfirmDialog bool) error {
+	if !selfUpdate {
+		return nil
+	}
 	// Private function for showing a confirmation dialog before upgrading
 	confirmDialog := func(current releaser.Version, target releaser.Version) bool {
 		result, err := runtime.MessageDialog(ctx, runtime.MessageDialogOptions{

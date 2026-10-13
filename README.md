@@ -1,3 +1,48 @@
+# App Lab for Torizon (unofficial build)
+
+This branch is an **unofficial build** of [Arduino App Lab](https://github.com/arduino/arduino-app-lab)
+with support for Torizon OS and Torizon Cloud. It is not affiliated with or endorsed by Arduino.
+Arduino and App Lab are trademarks of Arduino SA. The upstream README follows below.
+
+What it adds to App Lab 0.10.0:
+
+- shows the board's Linux distribution (e.g. Torizon OS) in the setup;
+- **Torizon Cloud** in the settings: import an API client (JSON, stored in the OS keychain) and
+  provision the board to Torizon Cloud under a name you choose;
+- **Publish** next to Run: builds the app on the board and uploads it to Torizon Cloud as a package
+  (the app's README becomes the package description), ready to deploy to a fleet;
+- the desktop self-update is off, so that Arduino's update channel does not replace this build.
+
+It needs a board running Torizon OS with the App Lab integration (Arduino VENTUNO Q). With
+Arduino's own OS images it behaves as the upstream App Lab.
+
+### Install (unsigned binaries)
+
+The release binaries are not signed:
+
+- **macOS:** move *App Lab for Torizon.app* to Applications, then right-click it and choose Open
+  (or run `xattr -dr com.apple.quarantine "/Applications/App Lab for Torizon.app"`).
+- **Windows:** unzip and run `AppLabTorizon.exe`; on the SmartScreen warning choose More info, Run
+  anyway. Needs the WebView2 runtime (included in Windows 10 and 11).
+- **Linux (x86-64):** `chmod +x AppLabTorizon` and run it; needs `libwebkit2gtk-4.1` (Ubuntu 22.04 or
+  later).
+
+It installs next to the official App Lab and shares its settings and caches. `arduino-app-lab://`
+links open whichever of the two the system picked.
+
+### Build
+
+As below, with the version set at build time, for example:
+
+```
+wails build -platform darwin/universal -ldflags "-X main.version=0.10.0+torizon.1"
+```
+
+Source: branch [`torizon-cloud`](https://github.com/EstebanSannin/arduino-app-lab/tree/torizon-cloud).
+License: GPL-3.0, as upstream.
+
+---
+
 # Arduino App Lab
 
 This is the Arduino App Lab desktop application. It's a cross-platform application built with [Wails](https://wails.io)

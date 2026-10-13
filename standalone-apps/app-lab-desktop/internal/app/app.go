@@ -72,7 +72,7 @@ func New(version string, learnSvc *learn.Learn) *App {
 }
 
 func (a *App) GetTitle() string {
-	return "Arduino App Lab - " + a.GetCurrentVersion()
+	return "App Lab for Torizon (unofficial build) - " + a.GetCurrentVersion()
 }
 
 func (a *App) HandleSecondInstanceLaunch(secondInstanceData options.SecondInstanceData) {
@@ -99,7 +99,10 @@ func (a *App) GetAboutMessage() string {
 	return fmt.Sprintf(
 		`Version: %s
 
-		Copyright © 2025 Arduino SA
+		Unofficial build of Arduino App Lab with Torizon OS and
+		Torizon Cloud support. Not affiliated with or endorsed by Arduino.
+
+		Copyright © 2025 Arduino SA and contributors
 		www.arduino.cc
 		`,
 		a.version,
